@@ -1,167 +1,172 @@
-document.addEventListener('DOMContentLoaded', function() {
+$(document).ready(function(){
+// GET
+  var getAndDisplayAllTasks = function () {
+      
+    $.ajax({
 
-  // Code placed here will run when the DOM content has loaded.
-  // Returns the first element with the 'todo-input' id
+      type: 'GET',
 
-document.getElementById('todo-input');
+      url: 'https://fewd-todolist-api.onrender.com/tasks?api_key=108',
 
-var todoList = document.getElementById('todo-list');
+      dataType: 'json',
 
-var todoInput = document.getElementById('todo-input');
+      success: function (response, textStatus) {
+        $('#todo-list').empty();
 
-var addButton = document.getElementById('add-button');
+        response.tasks.forEach(function (task) {
 
-var todoCount = 0;
+          $('#todo-list').append('<div class="row"><p class="col-xs-8">' + task.content + '</p><button class="delete" data-id="' + task.id + '">Delete</button><input type="checkbox" class="mark-complete" data-id="' + task.id + '"' + (task.completed ? 'checked' : '') + '>');
+        })
+      },
 
-// addTodo function will dynamically add a div element
+      error: function (request, textStatus, errorMessage) {
 
-// containing the description to the todo-list div.
+        console.log(errorMessage);
 
-var addTodo = function() {
+      }
 
-  // Create a div element and assign it to todoCol variable.
+    });
+  }
+// POST
+  var createTask = function () {
 
-  var todoCol = document.createElement('div');
+    $.ajax({
 
-  // Give it a class of col-xs-12 and todo.
-
-  todoCol.setAttribute('class', 'col-xs-12 todo');
-
-  // Create another div element and assign it to todoRow variable.
-
-  var todoRow = document.createElement('div');
-
-  // Give it a class of row.
-
-  todoRow.setAttribute('class', 'row');
-
-  // Create a button element and assign it to removeButton variable.
-
-  var removeButton = document.createElement('button');
-
-  // Set class attribute of removeButton as btn, btn-danger and remove-button.
-
-  removeButton.setAttribute('class','btn btn-danger remove-button');
-
-  // Add the string "REMOVE" into the innerHTML of removeButton.
-
-  removeButton.innerHTML = "REMOVE";
-
-  // Define the event listener for click so that this todoCol element
-
-  // will be removed when the user clicks removeButton
-
-  removeButton.onclick = function() {
-
-    // We use 'this' to point to the remove button element.
-
-    // this.parentNode.parentNode will assign todoCol to variable child
-
-    var child = this.parentNode.parentNode;
-
-    // We use the removeChild method to delete child from the todo-list
-
-    todoList.removeChild(child);
-
+      type: 'POST',
     
+      url: 'https://fewd-todolist-api.onrender.com/tasks?api_key=108',
+    
+      contentType: 'application/json',
+    
+      dataType: 'json',
+    
+      data: JSON.stringify({
+    
+        task: {
+    
+          content: $('#new-task-content').val()
+    
+        }
+    
+      }),
+    
+      success: function (response, textStatus) {
 
-    //  remove 1 from todoCount
+        $('#new-task-content').val('');
+        getAndDisplayAllTasks();
+    
+      },
+    
+      error: function (request, textStatus, errorMessage) {
+    
+        console.log(errorMessage);
+    
+      }
+    
+    });
+  }
 
-    todoCount--;
+  $('#create-task').on('submit', function (e) {
 
-  };
+    e.preventDefault();
+  
+    createTask();
+  
+  });
 
-  // Create an h5 element and assign it to the h5 variable.
+  getAndDisplayAllTasks();
 
-  var h5 = document.createElement('h5');
+// DELETE
+  var deleteTask = function (id) {
+    $.ajax({
 
-  // Sets the class attribute of h5 to take up 8 columns.
+      type: 'DELETE',
+    
+      url: 'https://fewd-todolist-api.onrender.com/tasks/' + id + '?api_key=108',
+    
+      success: function (response, textStatus) {
+    
+        getAndDisplayAllTasks();    
 
-  h5.setAttribute('class', 'col-xs-8');
+      },
+    
+      error: function (request, textStatus, errorMessage) {
+    
+        console.log(errorMessage);
+    
+      }
+    
+    });
+  }
 
-  // Assign the value of todoInput, which is the text the user typed
+  $(document).on('click', '.delete', function () {
+    deleteTask($(this).data('id'))
+  });
 
-  // into the input element, to the innerHTML property of h5.
+// Mark Complete
+  var markTaskComplete = function (id) {
+    $.ajax({
 
-  h5.innerHTML = todoInput.value;
+      type: 'PUT',
+    
+      url: 'https://fewd-todolist-api.onrender.com/tasks/'+ id + '/mark_complete?api_key=108',
+    
+      dataType: 'json',
+    
+      success: function (response, textStatus) {
+    
+        getAndDisplayAllTasks();
+    
+      },
+    
+      error: function (request, textStatus, errorMessage) {
+    
+        console.log(errorMessage);
+    
+      }
+    
+    });
+  }
 
-  // Add h5 as the last child element to the todoRow element.
+// Mark Active
+  var markTaskActive = function (id) {
 
-  todoRow.appendChild(h5);
+    $.ajax({
 
-  // Add removeButton as the last child element to todoRow.
+      type: 'PUT',
 
-  todoRow.appendChild(removeButton);
+      url: 'https://fewd-todolist-api.onrender.com/tasks/' + id + '/mark_active?api_key=108',
 
-  // Add todoRow as the last child element to the todoCol element.
+      dataType: 'json',
 
-  todoCol.appendChild(todoRow);
+      success: function (response, textStatus) {
 
-  // Append todoCol as the last child element to the todoList div.
+        getAndDisplayAllTasks();
 
-  todoList.appendChild(todoCol);
+      },
 
-};
+      error: function (request, textStatus, errorMessage) {
 
-// This handler will execute when the addButton is clicked.
+        console.log(errorMessage);
 
-addButton.addEventListener('click', function () {
+      }
 
-  // First we make sure that there is less than 10 to-dos,
-
-  // and some value exists in the input element.
-
-  if (todoCount < 10 && todoInput.value !== '') {
-
-    // Executes the addTodo function we defined earlier.
-
-    addTodo();
-
-    // Add 1 to todoCount.
-
-    todoCount++;
-
-    // Clear the input element by setting it to empty string.
-
-    todoInput.value = '';
+    });
 
   }
 
-});
-var checkThenAddTodo = function () {
+  $(document).on('change', '.mark-complete', function () {
 
-  // First we make sure that there is less than 10 to-dos,
+    if (this.checked) {
 
-  // and some value exists in the input element.
-
-  if (todoCount < 10 && todoInput.value !== '') {
-
-    // Executes the addTask function we defined earlier.
-
-    addTodo();
-
-    // Add 1 to taskCount.
-
-    todoCount++;
-
-    // Clear the input element by setting it to empty string.
-
-    todoInput.value = '';
-
-  }
-
-}
-
-addButton.addEventListener('click', checkThenAddTodo);
-
-todoInput.addEventListener('keyup', function (event) {
-
-  if (event.key === "Enter") {
-
-    checkThenAddTodo();
-
-  }
-
-});
+      markTaskComplete($(this).data('id'));
+  
+    } else {
+  
+      markTaskActive($(this).data('id'));
+  
+    }
+  
+  });
 
 });
