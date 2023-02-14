@@ -15,7 +15,7 @@ $(document).ready(function(){
 
         response.tasks.forEach(function (task) {
 
-          $('#todo-list').append('<div class="row"><p class="col-xs-8">' + task.content + '</p><button class="delete" data-id="' + task.id + '">Delete</button><input type="checkbox" class="mark-complete" data-id="' + task.id + '"' + (task.completed ? 'checked' : '') + '>');
+          $('#todo-list').append('<div class="row"><p class="js-task col-xs-8">' + task.content + '</p><button class="delete col-xs-2" data-id="' + task.id + '">❌</button><input type="checkbox" class="mark-complete" data-id="' + task.id + '"' + (task.completed ? 'checked' : '') + '>');
         })
       },
 

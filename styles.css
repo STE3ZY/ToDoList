@@ -1,6 +1,30 @@
-h2 {
+body {
 
-  color: #0000ff;
+  background-image: url(img/bg-notes.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  
+}
+
+.container {
+  
+  padding: 35px;
+  margin-top: 40px;
+  background-color : #b4824f;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+
+  
+}
+
+
+h2 {
+  
+  color: #383649ff;
+  margin-bottom: 100px;
+  font-weight: 800;
 
 }
 
@@ -12,4 +36,9 @@ h2 {
 
 .first {
    margin-left: 10em;
+}
+
+  
+.js-task {
+  font-size: 2em;
 }
