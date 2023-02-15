@@ -10,6 +10,12 @@
 
     <title>To Do List</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500&family=Orbitron:wght@500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -28,17 +34,17 @@
 
         <div class="center col-xs-12">
 
-          <h2>To Do List</h2>
+          <h2>To_Do_List</h2>
 
           <div id="todo-list"></div>
           <form id="create-task">
 
-            <input id="new-task-content" type="text" placeholder="Add new task" required/>
+            <input class="col-xs-12 col-md-4" id="new-task-content" type="text" placeholder="Add new task" required/>
           
-            <button class="create">Create Task</button>
-            <button class="nav-btn active">Active</button>
-            <button class="nav-btn complete">Complete</button>
-            <button class="nav-btn all">All</button>
+            <button class="create col-xs-12 col-md-2">Create</button>
+            <button class="nav-btn active  col-xs-12 col-md-2">Active</button>
+            <button class="nav-btn complete col-xs-12 col-md-2">Complete</button>
+            <button class="nav-btn all col-xs-12 col-md-2">All</button>
           
           </form>
 
