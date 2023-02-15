@@ -15,7 +15,7 @@ $(document).ready(function(){
 
         response.tasks.forEach(function (task) {
 
-          $('#todo-list').append('<div class="row"><p class="col-xs-8">' + task.content + '</p><button class="delete" data-id="' + task.id + '">Delete</button><input type="checkbox" class="mark-complete" data-id="' + task.id + '"' + (task.completed ? 'checked' : '') + '>');
+          $('#todo-list').append('<div class="row"><p class="js-task col-xs-8">' + task.content + '</p><button class="delete col-xs-2" data-id="' + task.id + '">❌</button><input type="checkbox" class="mark-complete" data-id="' + task.id + '"' + (task.completed ? 'checked' : '') + '>');
         })
       },
 
@@ -53,7 +53,7 @@ $(document).ready(function(){
       success: function (response, textStatus) {
 
         $('#new-task-content').val('');
-        getAndDisplayAllTasks();
+        getAndDisplayActiveTasks();
     
       },
     
@@ -66,7 +66,7 @@ $(document).ready(function(){
     });
   }
 
-  $('#create-task').on('submit', function (e) {
+  $('#create-task').on('click','.create' ,function (e) {
 
     e.preventDefault();
   
@@ -74,7 +74,7 @@ $(document).ready(function(){
   
   });
 
-  getAndDisplayAllTasks();
+  getAndDisplayActiveTasks();
 
 // DELETE
   var deleteTask = function (id) {
@@ -85,8 +85,8 @@ $(document).ready(function(){
       url: 'https://fewd-todolist-api.onrender.com/tasks/' + id + '?api_key=108',
     
       success: function (response, textStatus) {
-    
-        getAndDisplayAllTasks();    
+        
+          getAndDisplayActiveTasks(); 
 
       },
     
@@ -115,7 +115,7 @@ $(document).ready(function(){
     
       success: function (response, textStatus) {
     
-        getAndDisplayAllTasks();
+        getAndDisplayActiveTasks();
     
       },
     
@@ -141,7 +141,7 @@ $(document).ready(function(){
 
       success: function (response, textStatus) {
 
-        getAndDisplayAllTasks();
+        getAndDisplayCompleteTasks();
 
       },
 
@@ -169,4 +169,83 @@ $(document).ready(function(){
   
   });
 
+  // get All Tasks
+  $(document).on('click', '.all', function (e) {
+    e.preventDefault();
+    getAndDisplayAllTasks();
+    tab = 3;
+  });
+
+  // get Active Tasks
+  $(document).on('click', '.active', function (e) {
+    e.preventDefault();
+    getAndDisplayActiveTasks();
+    tab = 1;
+  });
+
+  // get Completed Tasks
+  $(document).on('click', '.complete', function (e) {
+    e.preventDefault();
+    getAndDisplayCompleteTasks();
+    tab = 2;
+  });
+
 });
+
+var getAndDisplayActiveTasks = function () {
+      
+  $.ajax({
+
+    type: 'GET',
+
+    url: 'https://fewd-todolist-api.onrender.com/tasks?api_key=108',
+
+    dataType: 'json',
+
+    success: function (response, textStatus) {
+      $('#todo-list').empty();
+      
+      response.tasks.forEach(function (task) {
+        if ((JSON.parse(task.completed)) === false){
+        $('#todo-list').append('<div class="row"><p class="col-xs-8">' + task.content + '</p><button class="delete" data-id="' + task.id + '">Delete</button><input type="checkbox" class="mark-complete" data-id="' + task.id + '"' + (task.completed ? 'checked' : '') + '>');
+        }
+      })
+    },
+
+    error: function (request, textStatus, errorMessage) {
+
+      console.log(errorMessage);
+
+    }
+
+  });
+}
+
+var getAndDisplayCompleteTasks = function () {
+      
+  $.ajax({
+
+    type: 'GET',
+
+    url: 'https://fewd-todolist-api.onrender.com/tasks?api_key=108',
+
+    dataType: 'json',
+
+    success: function (response, textStatus) {
+      $('#todo-list').empty();
+      
+      response.tasks.forEach(function (task) {
+        if ((JSON.parse(task.completed)) === true){
+        $('#todo-list').append('<div class="row"><p class="col-xs-8">' + task.content + '</p><button class="delete" data-id="' + task.id + '">Delete</button><input type="checkbox" class="mark-complete" data-id="' + task.id + '"' + (task.completed ? 'checked' : '') + '>');
+        }
+      })
+    },
+
+    error: function (request, textStatus, errorMessage) {
+
+      console.log(errorMessage);
+
+    }
+
+  });
+}
