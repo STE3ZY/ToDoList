@@ -1,8 +1,12 @@
 body {
-
+  font-family: 'Noto Sans', sans-serif;
   background-image: url(img/bg-notes.jpg);
-  background-size: cover;
   background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed; /* prevents the image from scrolling with the page */
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; /* scales the image to cover the entire background */
   
 }
 
@@ -10,35 +14,79 @@ body {
   
   padding: 35px;
   margin-top: 40px;
-  background-color : #b4824f;
+  background-image: url(img/papertxtr.jpg);
+  background-size: cover;
   border-radius: 10px;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
+ 
 
-  
 }
 
 
 h2 {
   
-  color: #383649ff;
-  margin-bottom: 100px;
-  font-weight: 800;
-
+  font-size: 4em;
+  display: flex;
+  color: #616c92;
+  justify-content: center;
+  margin-bottom: 2em;
 }
 
-.delete {
 
-  margin-right: 5px;
-
-}
-
-.first {
-   margin-left: 10em;
-}
 
   
 .js-task {
   font-size: 2em;
+}
+
+#todo-list {
+  
+  font-size: 1.5em;
+  font-family: 'Gochi Hand', sans-serif;
+  margin-bottom: 1em;
+  color:white;
+
+  
+}
+
+.nav-btn {
+  font-size: 1.5em;
+  float: inline-end;
+  color: hwb(227 15% 53%);
+  border: none;
+  background: none;
+  font-weight: bold;
+}
+
+input[type="checkbox"] {
+  /* float: inline; */
+  width: 20px;
+  height: 20px;
+  
+}
+
+
+.delete {
+  font-size: 1.4em;
+  float: inline-end;
+  margin-right: 5px;
+  border: none;
+  background: none;
+  color: hsl(227, 68%, 39%);
+
+}
+
+input {
+  font-size: 1.5em;
+  border-radius: 25px;
+  border-style: none;
+  margin-right: 5px;
+}
+
+.create {
+  font-size: 1.5em;
+  color: white;
+  background-color: #616c92;
+  border: none;
+  max-width:fit-content;
+  border-radius: 25px;
 }
